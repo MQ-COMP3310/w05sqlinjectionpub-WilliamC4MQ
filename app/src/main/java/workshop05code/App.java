@@ -11,6 +11,8 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import java.util.regex.Pattern; // for query sanitisation
+
 /**
  *
  * @author sqlitetutorial.net
@@ -81,6 +83,9 @@ public class App {
                     System.out.println("Invalid guess. Please enter a 4-letter word.");
                 } else if (wordleDatabaseConnection.isValidWord(guess)) {
                     System.out.println("Success! It is in the list.");
+                } else if (!Pattern.matches("^[a-zA-Z0-9\\s]+$", guess)) { // if query contains anything other than letters, numbers and spaces
+                        logger.log(Level.INFO, "Illegal characters guessed: " + guess);
+                        System.out.println("Invalid input, guess using only letters.");
                 } else {
                     logger.log(Level.INFO, "Invalid word guessed: " + guess);
                     System.out.println("Sorry. This word is NOT in the list.");
